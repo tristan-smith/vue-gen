@@ -1,0 +1,26 @@
+{
+  "name": "vue-gen",
+  "version": "1.0.0",
+  "description": "Generate a multi file vue component",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "vue-gen": "./index.js"
+  },
+  "keywords": [
+    "vue",
+    "cli",
+    "generate",
+    "component",
+    "vue",
+    "util"
+  ],
+  "author": "Tristan Smith",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "commander": "^2.16.0"
+  }
+}
