@@ -1,5 +1,5 @@
 {
-  "name": "vue-gen",
+  "name": "@tristan-smith/vue-gen",
   "version": "1.0.0",
   "description": "Generate a multi file vue component",
   "main": "index.js",
