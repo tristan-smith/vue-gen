@@ -22,3 +22,21 @@ creates
 | -v | --verbose | modifier, generates verbose version (multifile component, for example) |
 |  |  |  |
 
+## Setup
+```
+npm install --save-dev @tristan-smith/vue-gen
+```
+(can also be installed globally)
+
+## Development
+Fork and clone, then run
+```
+npm install -g
+npm link
+```
+Run the script anywhere and test your changes to the project.
+
+## To Do?
+* Better error handling
+* Tests
+* Interaction with a vue router file (import component automatically)
