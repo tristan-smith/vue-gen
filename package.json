@@ -22,5 +22,7 @@
   "dependencies": {
     "chalk": "^2.4.1",
     "commander": "^2.16.0"
-  }
+  },
+  "repository": "github:tristan-smith/-tristan-smith-vue-gen",
+  "homepage": "https://github.com/tristan-smith/-tristan-smith-vue-gen#readme",
 }
