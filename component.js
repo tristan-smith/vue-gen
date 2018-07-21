@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const chalk = require('chalk');
 
-const { getPrettyName } = require('./utils');
+const { getPrettyName } = require('./utils/pretty-name');
 
 /**
  * Generate a multifile component in the current working directory
@@ -10,7 +10,7 @@ const { getPrettyName } = require('./utils');
  * @param {String} name name of the component to generate
  */
 function generateComponent(name, verbose) {
-  const isVerbose = verbose === undefined ? false : true;
+  const isVerbose = verbose === undefined ? false : verbose;
   let src = path.join(__dirname, '/templates/small-component');
   let destination = process.cwd();
   if (isVerbose) {

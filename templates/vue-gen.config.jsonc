@@ -1,0 +1,8 @@
+// sample configuration file
+{
+  "defaults": {
+    "component": {
+      "verbose": true
+    }
+  }
+}

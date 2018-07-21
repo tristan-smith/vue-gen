@@ -3,7 +3,7 @@
 A simple vue utility script for generating components.
 ## Example
 ```
-vue-gen -c user-dashboard -v
+vue-gen c user-dashboard -v
 ```
 creates
 ```
@@ -15,11 +15,14 @@ creates
 ----user-dashboard.html
 ```
 
-## Options
+## vue-gen c <componentName>
+Generates a vue component in the current working directory
+
+### Options
 | small flag | long flag | effect |
 | ---------- | ---------- | ------ |
-| -c | --component | generate a vue component, required name argument |
 | -v | --verbose | modifier, generates verbose version (multifile component, for example) |
+| -s | --small | modifier, generates small version |
 |  |  |  |
 
 ## Setup
