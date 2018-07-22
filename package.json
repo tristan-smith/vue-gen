@@ -20,8 +20,8 @@
   "author": "Tristan Smith",
   "license": "ISC",
   "dependencies": {
-    "chalk": "^2.4.1",
-    "commander": "^2.16.0"
+    "commander": "^2.16.0",
+    "ora": "^3.0.0"
   },
   "repository": "github:tristan-smith/vue-gen",
   "homepage": "https://github.com/tristan-smith/vue-gen#readme"

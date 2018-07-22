@@ -1,15 +1,20 @@
 const path = require('path');
+const { promisify } = require('util');
 const fs = require('fs');
-const chalk = require('chalk');
 
 const { getPrettyName } = require('./utils/pretty-name');
+
+const mkdir = promisify(fs.mkdir);
+const readFile = promisify(fs.readFile);
+const writeFile = promisify(fs.writeFile);
 
 /**
  * Generate a multifile component in the current working directory
  * Working directory may not contain a folder with the same name as the component
  * @param {String} name name of the component to generate
  */
-function generateComponent(name, verbose) {
+async function generateComponent(name, verbose) {
+  // parse options object
   const isVerbose = verbose === undefined ? false : verbose;
   let src = path.join(__dirname, '/templates/small-component');
   let destination = process.cwd();
@@ -17,43 +22,49 @@ function generateComponent(name, verbose) {
     src = path.join(__dirname, '/templates/verbose-component');
     destination = path.join(process.cwd(), name);
   }
-  console.log(chalk.blue(`Creating a component ${name} in ${destination}...`));
 
-  try {
-    let files = {
+  // check destinations and build files object
+  let files = {
+    [`${name}.vue`]: 'app.vue',
+  };
+  if (isVerbose) {
+    try {
+      await mkdir(destination);
+    } catch (err) {
+      throw new Error('Directory already exists');
+    }
+    files = {
+      [`${name}.js`]: 'app.js',
+      [`${name}.css`]: 'app.css',
+      [`${name}.html`]: 'app.html',
       [`${name}.vue`]: 'app.vue',
     };
-    if (isVerbose) {
-      fs.mkdirSync(destination);
-      files = {
-        [`${name}.js`]: 'app.js',
-        [`${name}.css`]: 'app.css',
-        [`${name}.html`]: 'app.html',
-        [`${name}.vue`]: 'app.vue',
-      };
+  } else {
+    try {
+      const file = await readFile(path.join(process.cwd(), `${name}.vue`), 'utf-8');
+      if (file) {
+        throw new Error(`${name}.vue already exists`);
+      }
+    } catch (err) {
+      if (err.code === 'ENOENT') {
+        // if the file doesn't exist good
+      } else {
+        // otherwise throw an error
+        throw err;
+      }
     }
-
-    // for each new file, parse the template file and save in the destination directory
-    Object.keys(files).forEach((newFile) => {
-      fs.readFile(path.join(`${src}/${files[newFile]}`), 'utf-8', (err, data) => {
-        if (err) {
-          return console.log(err);
-        }
-        const newData = data.replace(/{{ name }}/g, name).replace(/{{ prettyName }}/g, getPrettyName(name));
-
-        fs.writeFile(path.join(`${destination}/${newFile}`), newData, 'utf8', function (err) {
-          if (err) return console.log(err);
-        });
-      })
-    })
-
-  } catch (err) {
-    if (err.code === 'EEXIST') {
-      console.log(chalk.red(`Component folder ./${name} already exists`));
-      return;
-    }
-    console.log(err);
   }
+
+  // for each new file, parse the template file and save in the destination directory
+  Object.keys(files).forEach(async (newFile) => {
+    try {
+      const data = await readFile(path.join(`${src}/${files[newFile]}`), 'utf-8');
+      const newData = data.replace(/{{ name }}/g, name).replace(/{{ prettyName }}/g, getPrettyName(name));
+      await writeFile(path.join(`${destination}/${newFile}`), newData, 'utf8');
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  });
 }
 
 module.exports = {

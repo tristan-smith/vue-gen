@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 const cmd = require('commander');
 const chalk = require('chalk');
+const ora = require('ora');
 
 const { generateComponent } = require('./component');
 const { findConfig } = require('./utils/find-config');
@@ -12,12 +13,24 @@ cmd
   .option('-s, --small', 'Small option')
   .action(async function (componentName, options) {
     let config = null;
+
+    const spinner = ora();
+    spinner.start('Finding config');
+
     try {
       config = await findConfig();
+      spinner.succeed('Found config');
     } catch (err) {
-      console.log(chalk.yellow('Could not find config file, continuing without user settings'));
+      // console.log(chalk.yellow('Could not find config file, continuing without user settings'));
+      spinner.warn(err.message);
     }
-    makeComponent(config, componentName, options);
+
+    spinner.start('Generating component');
+    makeComponent(config, componentName, options).then(() => {
+      spinner.succeed('Generated component');
+    }).catch((err) => {
+      spinner.fail(err.message);
+    });
   });
 
 cmd.parse(process.argv);
@@ -29,28 +42,31 @@ cmd.parse(process.argv);
  * @param {*} options
  */
 function makeComponent(config, componentName, options) {
-  // TODO: build options object, populate with config, then populate with command line options
-
-  // check for mutually exclusive options...
-  if (options.small && options.verbose) {
-    console.log(chalk.red('Please choose small or verbose'));
-    return;
-  }
-
-  console.log(chalk.blue('Generating component'));
-
-  let verbose = false;
-  if (config) {
-    try {
-      verbose = config.defaults.component.verbose;
-    } catch (err) {
-      console.log(chalk.yellow('Malformed config file, continuing without user settings'));
+  return new Promise((resolve, reject) => {
+    // check for mutually exclusive options...
+    if (options.small && options.verbose) {
+      reject(new Error('Please choose small or verbose'));
+      return;
     }
-  }
-  if (options.verbose !== undefined) {
-    verbose = options.verbose;
-  } else if (options.small !== undefined) {
-    verbose = !options.small;
-  }
-  generateComponent(componentName, verbose);
+
+    let verbose = false;
+    if (config) {
+      try {
+        verbose = config.defaults.component.verbose;
+      } catch (err) {
+        // console.log(chalk.yellow('Malformed config file, continuing without user settings'));
+      }
+    }
+    if (options.verbose !== undefined) {
+      verbose = options.verbose;
+    } else if (options.small !== undefined) {
+      verbose = !options.small;
+    }
+
+    generateComponent(componentName, verbose).then(() => {
+      resolve();
+    }).catch((err) => {
+      reject(err);
+    });
+  });
 }
