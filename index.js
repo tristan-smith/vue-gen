@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 const cmd = require('commander');
-const chalk = require('chalk');
-const ora = require('ora');
 
 const { generateComponent } = require('./component');
 const { findConfig } = require('./utils/find-config');
@@ -14,22 +12,18 @@ cmd
   .action(async function (componentName, options) {
     let config = null;
 
-    const spinner = ora();
-    spinner.start('Finding config');
-
     try {
       config = await findConfig();
-      spinner.succeed('Found config');
+      console.log('Found config');
     } catch (err) {
       // console.log(chalk.yellow('Could not find config file, continuing without user settings'));
-      spinner.warn(err.message);
+      console.log(err.message);
     }
 
-    spinner.start('Generating component');
     makeComponent(config, componentName, options).then(() => {
-      spinner.succeed('Generated component');
+      console.log('Generated component');
     }).catch((err) => {
-      spinner.fail(err.message);
+      console.log(err.message);
     });
   });
 

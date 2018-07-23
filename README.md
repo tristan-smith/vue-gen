@@ -38,8 +38,3 @@ npm install -g
 npm link
 ```
 Run the script anywhere and test your changes to the project.
-
-## To Do?
-* Better error handling
-* Tests
-* Interaction with a vue router file (import component automatically)
