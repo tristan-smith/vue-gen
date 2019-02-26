@@ -21,18 +21,16 @@ function findConfig(filePath) {
     });
   });
 
-  return promise.then((data) => {
-    return data;
-  }).catch((err) => {
+  return promise.then(data => data).catch(() => {
     if (fp.length > 100) {
       // Searched too many directories, call it quits...
       throw new Error('Could not find config file');
     } else {
       return findConfig(`${fp}/..`);
     }
-  })
+  });
 }
 
 module.exports = {
   findConfig,
-}
+};

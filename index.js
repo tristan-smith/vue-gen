@@ -9,7 +9,7 @@ cmd
   .command('c <componentName>')
   .option('-v, --verbose', 'Verbose option')
   .option('-s, --small', 'Small option')
-  .action(async function (componentName, options) {
+  .action(async (componentName, options) => {
     let config = null;
 
     try {
@@ -48,7 +48,7 @@ function makeComponent(config, componentName, options) {
       try {
         verbose = config.defaults.component.verbose;
       } catch (err) {
-        // console.log(chalk.yellow('Malformed config file, continuing without user settings'));
+        // fine
       }
     }
     if (options.verbose !== undefined) {

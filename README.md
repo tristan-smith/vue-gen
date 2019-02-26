@@ -1,6 +1,6 @@
 # Vue Gen
 ## @tristan-smith/vue-gen
-A simple vue utility script for generating components.
+A simple vue utility script for generating components. Templates follow Airbnb Base eslint rules.
 ## Example
 ```
 vue-gen c user-dashboard -v

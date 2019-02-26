@@ -1,6 +1,6 @@
 export default {
-    name: '{{ prettyName }}',
-    data() {
-        return {};
-    },
-}
+  name: '{{ prettyName }}',
+  data() {
+    return {};
+  },
+};

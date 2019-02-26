@@ -9,10 +9,10 @@ function getPrettyName(name) {
   let prettyName = '';
   words.forEach((word) => {
     prettyName += `${word[0].toUpperCase()}${word.substring(1)}`;
-  })
+  });
   return prettyName;
 }
 
 module.exports = {
   getPrettyName,
-}
+};

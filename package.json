@@ -23,5 +23,10 @@
     "commander": "^2.16.0"
   },
   "repository": "github:tristan-smith/vue-gen",
-  "homepage": "https://github.com/tristan-smith/vue-gen#readme"
+  "homepage": "https://github.com/tristan-smith/vue-gen#readme",
+  "devDependencies": {
+    "eslint": "^5.14.1",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0"
+  }
 }
