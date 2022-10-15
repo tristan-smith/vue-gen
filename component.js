@@ -12,9 +12,12 @@ const writeFile = promisify(fs.writeFile);
  * Generate a multifile component in the current working directory
  * Working directory may not contain a folder with the same name as the component
  * @param {String} name name of the component to generate
+ * @param {Boolean} verbose if true, generate separate files for template, script, and styles.
+ * @throws {Error} throws if directory or file already exists.
  */
 async function generateComponent(name, verbose) {
-  // parse options object
+  // parse options
+  // default is a single file component, not verbose
   const isVerbose = verbose === undefined ? false : verbose;
   let src = path.join(__dirname, '/templates/small-component');
   let destination = process.cwd();
@@ -23,7 +26,7 @@ async function generateComponent(name, verbose) {
     destination = path.join(process.cwd(), name);
   }
 
-  // check destinations and build files object
+  // check destinations and build files object - assign template files to file names.
   let files = {
     [`${name}.vue`]: 'app.vue',
   };

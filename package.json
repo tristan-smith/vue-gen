@@ -1,7 +1,7 @@
 {
   "name": "@tristan-smith/vue-gen",
-  "version": "2.0.1",
-  "description": "Generate a multi file vue component",
+  "version": "2.0.2",
+  "description": "Scaffold vue components with this CLI tool",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -20,7 +20,7 @@
   "author": "Tristan Smith",
   "license": "ISC",
   "dependencies": {
-    "commander": "^2.16.0"
+    "commander": "^9.4.1"
   },
   "repository": "github:tristan-smith/vue-gen",
   "homepage": "https://github.com/tristan-smith/vue-gen#readme",
