@@ -1,45 +1,55 @@
 #!/usr/bin/env node
-const cmd = require('commander');
+const { Command } = require('commander');
 
 const { generateComponent } = require('./component');
 const { findConfig } = require('./utils/find-config');
 
-// parse command options
-cmd
-  .command('c <componentName>')
-  .option('-v, --verbose', 'Verbose option')
-  .option('-s, --small', 'Small option')
+program = new Command();
+
+program
+  .name('vue-gen')
+  .description('a small Vue component generator')
+
+// Create Component command
+program
+  .command('c')
+  .argument('<componentName>', 'Dash separated component name')
+  .option('-v, --verbose', 'Verbose option, creates separate files for script, template, and styles.')
+  .option('-s, --small', 'Small option, creates a single file component. (Default)')
   .action(async (componentName, options) => {
     let config = null;
+
 
     try {
       config = await findConfig();
       console.log('Found config');
     } catch (err) {
-      // console.log(chalk.yellow('Could not find config file, continuing without user settings'));
+      // Let the config utility tell us what went wrong
       console.log(err.message);
     }
 
     makeComponent(config, componentName, options).then(() => {
       console.log('Generated component');
     }).catch((err) => {
+      // Let the component utility tell us what went wrong
       console.log(err.message);
     });
   });
 
-cmd.parse(process.argv);
+program.parse();
 
 /**
  * Generate a vue component with config, command options, and component name
  * @param {Object} config
  * @param {*} componentName
  * @param {*} options
+ * @throws {Error} throws with invalid configuration, or component generation error (see component.js).
  */
 function makeComponent(config, componentName, options) {
   return new Promise((resolve, reject) => {
     // check for mutually exclusive options...
     if (options.small && options.verbose) {
-      reject(new Error('Please choose small or verbose'));
+      reject(new Error('Please choose either small or verbose'));
       return;
     }
 

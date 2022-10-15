@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const configFileName = 'vue-gen.config.js';
+const configFileName = 'vue-gen.config.json';
 
 /**
  * Find config relative to cwd by travelling up directories.
@@ -15,8 +15,13 @@ function findConfig(filePath) {
     fs.readFile(path.join(process.cwd(), `${fp}/${configFileName}`), 'utf-8', (err, data) => {
       if (err) {
         reject(new Error('Could not find config file in this directory'));
-      } else if (data) {
-        resolve(JSON.parse(data));
+      } else {
+        try {
+          data = JSON.parse(data);
+          resolve(data);
+        } catch (err) {
+          reject(new Error('Could not parse config file'));
+        }
       }
     });
   });
